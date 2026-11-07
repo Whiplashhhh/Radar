@@ -22,8 +22,8 @@ export function ItemPage() {
     }
   }, [data, setRead]);
 
-  if (isPending) return <><PageHeader title="" back /><div className="flex justify-center py-20"><Spinner size={28} /></div></>;
-  if (isError || !data) return <><PageHeader title="Article" back /><EmptyState icon={<FileText size={28} />} title="Article indisponible">{(error as Error | null)?.message ?? 'Introuvable'}</EmptyState></>;
+  if (isPending) return <><PageHeader width="max-w-[44rem]" title="" back /><div className="flex justify-center py-20"><Spinner size={28} /></div></>;
+  if (isError || !data) return <><PageHeader width="max-w-[44rem]" title="Article" back /><EmptyState icon={<FileText size={28} />} title="Article indisponible">{(error as Error | null)?.message ?? 'Introuvable'}</EmptyState></>;
 
   const html = mode === 'readable' && data.readableHtml ? data.readableHtml : data.contentHtml || data.summaryHtml;
   const share = async () => {
@@ -32,7 +32,7 @@ export function ItemPage() {
   };
   return (
     <>
-      <PageHeader
+      <PageHeader width="max-w-[44rem]"
         title=""
         back
         actions={

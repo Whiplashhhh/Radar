@@ -37,7 +37,7 @@ export function BriefingPage() {
 
   return (
     <>
-      <PageHeader
+      <PageHeader width="max-w-[44rem]"
         title="Briefing du matin"
         back={params.id ? '/briefing' : undefined}
         actions={<Button variant="ghost" onClick={() => gen.mutate()} disabled={gen.isPending} className="!px-3">{gen.isPending ? <Spinner size={18} /> : <RefreshCw size={18} />}<span className="hidden min-[420px]:inline">Générer</span></Button>}

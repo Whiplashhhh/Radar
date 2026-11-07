@@ -6,11 +6,11 @@ export function Spinner({ size = 20, label = 'Chargement' }: { size?: number; la
   return <Loader2 role="status" aria-label={label} size={size} className="animate-spin-slow text-muted" />;
 }
 
-export function PageHeader({ title, back, actions, subtitle }: { title: ReactNode; back?: boolean | string; actions?: ReactNode; subtitle?: ReactNode }) {
+export function PageHeader({ title, back, actions, subtitle, width = 'max-w-3xl' }: { title: ReactNode; back?: boolean | string; actions?: ReactNode; subtitle?: ReactNode; width?: string }) {
   const navigate = useNavigate();
   return (
     <header className="pt-safe sticky top-0 z-20 border-b border-border/70 bg-bg/85 backdrop-blur-xl supports-[backdrop-filter]:bg-bg/75">
-      <div className="px-safe mx-auto flex min-h-14 max-w-3xl items-center gap-1">
+      <div className={`px-safe mx-auto flex min-h-14 ${width} items-center gap-1`}>
         {back && (
           <button
             type="button"

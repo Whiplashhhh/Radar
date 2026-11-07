@@ -13,6 +13,7 @@ const STATUS: Record<Feed['status'], { label: string; cls: string }> = {
   disabled: { label: 'Désactivé', cls: 'bg-surface-3' },
 };
 const CATS: Category[] = ['security', 'tech', 'releases', 'news'];
+const STATUS_ORDER: Feed['status'][] = ['error', 'warning', 'pending', 'ok', 'disabled'];
 
 export function FeedsPage() {
   const qc = useQueryClient();
@@ -44,7 +45,7 @@ export function FeedsPage() {
   const counts = (data ?? []).reduce<Record<string, number>>((m, f) => ({ ...m, [f.status]: (m[f.status] ?? 0) + 1 }), {});
   return (
     <>
-      <PageHeader title="Flux" back="/settings" subtitle={data ? `${data.length} flux · ${counts.ok ?? 0} OK · ${(counts.warning ?? 0) + (counts.error ?? 0)} en erreur` : undefined} />
+      <PageHeader width="max-w-2xl" title="Flux" back="/settings" subtitle={data ? `${data.length} flux · ${counts.ok ?? 0} OK · ${(counts.warning ?? 0) + (counts.error ?? 0)} en erreur` : undefined} />
       <main className="px-safe pb-tabbar mx-auto max-w-2xl pt-4">
         <form
           className="rounded-2xl border border-border bg-surface p-4"
@@ -75,7 +76,7 @@ export function FeedsPage() {
           <div className="flex justify-center py-10"><Spinner /></div>
         ) : (
           <ul className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-surface">
-            {data?.map((f) => (
+            {[...(data ?? [])].sort((a, b) => STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status)).map((f) => (
               <li key={f.id}>
                 <button type="button" aria-expanded={open === f.id} onClick={() => setOpen(open === f.id ? null : f.id)} className="flex min-h-14 w-full items-center gap-3 px-4 py-2.5 text-left hover:bg-surface-2">
                   <span aria-label={STATUS[f.status].label} title={STATUS[f.status].label} className={`h-2.5 w-2.5 shrink-0 rounded-full ${STATUS[f.status].cls}`} />

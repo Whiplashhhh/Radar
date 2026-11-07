@@ -20,12 +20,12 @@ export function VulnPage() {
     }
   }, [data, setRead]);
 
-  if (isPending) return <><PageHeader title={id} back /><div className="flex justify-center py-20"><Spinner size={28} /></div></>;
-  if (isError || !data) return <><PageHeader title={id} back /><EmptyState icon={<ShieldQuestion size={28} />} title="Fiche indisponible">{(error as Error | null)?.message}</EmptyState></>;
+  if (isPending) return <><PageHeader width="max-w-[44rem]" title={id} back /><div className="flex justify-center py-20"><Spinner size={28} /></div></>;
+  if (isError || !data) return <><PageHeader width="max-w-[44rem]" title={id} back /><EmptyState icon={<ShieldQuestion size={28} />} title="Fiche indisponible">{(error as Error | null)?.message}</EmptyState></>;
 
   return (
     <>
-      <PageHeader
+      <PageHeader width="max-w-[44rem]"
         title={<span className="font-mono">{data.id}</span>}
         back
         actions={data.itemId ? (

@@ -19,7 +19,7 @@ export function SettingsPage() {
 
   return (
     <>
-      <PageHeader title="Réglages" />
+      <PageHeader width="max-w-2xl" title="Réglages" />
       <main className="px-safe pb-tabbar mx-auto max-w-2xl">
         <PushSection />
         {!s ? (

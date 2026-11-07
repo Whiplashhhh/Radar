@@ -9,7 +9,7 @@ export function WatchlistPage() {
   const { data, isPending } = useQuery({ queryKey: ['watchlist'], queryFn: api.watchlist });
   return (
     <>
-      <PageHeader
+      <PageHeader width="max-w-2xl"
         title="Watchlist"
         back="/settings"
         actions={
@@ -78,11 +78,11 @@ export function WatchEditPage() {
     },
   });
 
-  if (!f) return <><PageHeader title="Techno" back="/settings/watchlist" /><div className="flex justify-center py-10"><Spinner /></div></>;
+  if (!f) return <><PageHeader width="max-w-2xl" title="Techno" back="/settings/watchlist" /><div className="flex justify-center py-10"><Spinner /></div></>;
   const set = (p: Partial<typeof EMPTY>) => setForm({ ...f, ...p });
   return (
     <>
-      <PageHeader
+      <PageHeader width="max-w-2xl"
         title={isNew ? 'Nouvelle techno' : f.name}
         back="/settings/watchlist"
         actions={!isNew && <IconButton label="Supprimer" onClick={() => window.confirm(`Supprimer « ${f.name} » ?`) && del.mutate()}><Trash2 size={20} className="text-danger" /></IconButton>}
