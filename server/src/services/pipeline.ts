@@ -367,7 +367,9 @@ export class Pipeline {
     const now = this.now();
     const recent = v.publishedAt == null || v.publishedAt > now - 90 * DAY;
     const kevRecent = v.kev && v.kevAddedAt != null && Date.parse(`${v.kevAddedAt}T00:00:00Z`) > now - 30 * DAY;
-    return kevRecent || (recent && (level != null || v.severity === 'critical'));
+    // Une vuln seulement citée (sans titre, description ni CVSS) attend l'enrichissement NVD avant d'avoir sa carte.
+    const hasData = !!(v.title || v.description || v.cvssScore != null);
+    return hasData && (kevRecent || (recent && (level != null || v.severity === 'critical')));
   }
 
   rescoreVuln(id: string, opts: { quiet: boolean; feedId?: number; surface?: boolean }): Vuln | null {
@@ -420,7 +422,7 @@ export class Pipeline {
       this.db
         .update(items)
         .set({
-          title: v.title ? truncate(v.title, 300) : id,
+          title: v.title ? truncate(v.title, 300) : v.description ? truncate(v.description.split(/(?<=\.)\s/)[0] ?? v.description, 160) : id,
           summaryHtml: v.description ? `<p>${escapeHtml(truncate(v.description, 1200))}</p>` : null,
           url: vulnUrl(updated),
           score,

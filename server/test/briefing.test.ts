@@ -66,7 +66,7 @@ describe('briefing', () => {
     seedNews(ctx);
     const b = await ctx.services.briefings.generate();
     expect(b?.model).toBeNull();
-    expect(b?.itemCount).toBe(3); // 2 articles + la carte CVE qui touche Spring
+    expect(b?.itemCount).toBe(2); // la CVE seulement citée n'a pas de carte avant enrichissement NVD
     expect(b?.summary).toContain('## Sécurité');
     expect(b?.sections.map((s) => s.category)).toEqual(['security', 'tech']);
     // période suivante : rien de neuf → pas de briefing

@@ -9,11 +9,11 @@ Ajout utilisateur : Ollama n'est PLUS optionnel côté dev → résumés par art
 ## Critères de fin
 - [x] SPEC.md, PLAN.md, DECISIONS.md
 - [x] Backend complet démarre, /health ok, collecte réelle KEV/GHSA/releases OK
-- [ ] Tests Vitest (matching pièges, scoring, dédup, parsing, notifs, pipeline, API)
-- [ ] Briefing Ollama quotidien (table, scheduler, API, UI, tests)
+- [x] Tests Vitest — 103 verts (`npm test`)
+- [x] Briefing Ollama quotidien backend (services/briefing.ts, intégré à notifier.digest) — UI à faire
 - [ ] Frontend React/Tailwind/PWA complet (onglets, cartes, fiche vuln, réglages, swipe, PTR, offline, iOS install, badge)
 - [ ] Playwright e2e + captures docs/screenshots (iPhone 390×844 + desktop, sombre + clair), relues
-- [ ] Dockerfile, docker-compose (127.0.0.1), CI GitHub Actions
+- [x] Dockerfile, docker-compose (127.0.0.1), CI (.github/workflows/ci.yml, feeds.yml) — non exécutables ici
 - [ ] README complet
 - [ ] lint + typecheck + test + build verts
 
@@ -24,10 +24,10 @@ Ajout utilisateur : Ollama n'est PLUS optionnel côté dev → résumés par art
 - Ne jamais `pkill -f` avec un motif présent dans la commande (tue le shell) : utiliser ps|grep [x]|kill.
 
 ## État actuel
-Backend dans server/src (app, config, db, adapters, core, services, routes, seed). Front pas commencé (web/ vide).
+Backend complet + testé + commité. Front pas commencé (web/ vide). npm run check:feeds : 13/26 OK (le reste = réseau bac à sable).
 
 ## Prochaine étape
-Écrire server/test/*.test.ts puis npm test.
+Frontend : web/vite.config.ts, index.html, src/{main.tsx,sw.ts,index.css,api.ts,lib,components,pages}. Onglets Prioritaire/Sécurité/Tech/Tout/Réglages + pages item, vuln, briefing, réglages (notifs, watchlist, flux/santé, Ollama).
 
 ## Fichiers clés
 - `server/src/services/pipeline.ts` — ingestion, fusion vulns, matching, scoring
