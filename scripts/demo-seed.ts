@@ -140,5 +140,5 @@ db.insert(briefings).values({
   ].join('\n'),
 }).run();
 
-console.log(`demo data ready in ${dataDir}: ${db.$client.prepare('SELECT count(*) n FROM items').get().n} items`);
+console.log(`demo data ready in ${dataDir}: ${(db.$client.prepare('SELECT count(*) n FROM items').get() as { n: number }).n} items`);
 db.$client.close();
