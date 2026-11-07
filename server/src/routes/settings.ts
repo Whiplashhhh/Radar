@@ -128,4 +128,26 @@ export async function settingsRoutes(api: FastifyInstance, { db, services }: App
     const payload = await services.notifier.digest(true);
     return { sent: !!payload, payload };
   });
+
+  // ─── Briefing du matin & Ollama ───
+  api.get('/briefings', async () => services.briefings.list(30).map(({ sections: _s, ...b }) => b));
+
+  api.get<{ Params: { id: string } }>('/briefings/:id', async (req) => {
+    const b = req.params.id === 'latest' ? services.briefings.latest() : services.briefings.get(Number(req.params.id));
+    if (!b) throw httpError(404, 'Aucun briefing');
+    return b;
+  });
+
+  api.post<{ Params: { id: string } }>('/briefings/:id/read', async (req) => {
+    services.briefings.markRead(Number(req.params.id));
+    return { ok: true };
+  });
+
+  /** Génère un briefing tout de suite (période : depuis le précédent). */
+  api.post('/briefings/generate', async () => {
+    const b = await services.briefings.generate({ force: true });
+    return { created: !!b, briefing: b };
+  });
+
+  api.get('/ollama/status', async () => services.summarizer.status());
 }

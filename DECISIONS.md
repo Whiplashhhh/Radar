@@ -12,3 +12,6 @@ Une ligne par choix non trivial.
 - **sanitize-html** côté serveur à la place de DOMPurify : même rôle, sans DOM à émuler pour chaque item.
 - **Readability** (`@mozilla/readability`) sur `linkedom` plutôt que jsdom : plus léger, et suffisant pour l'extraction.
 - **Playwright épinglé en 1.64.0** : c'est la version qui correspond au Chromium préinstallé dans le bac à sable (révision 1248).
+- **Ollama devient une fonctionnalité de premier plan** (demande utilisateur du 2026-11-07) : briefing quotidien généré à l'heure du digest et couvrant toutes les actus depuis le briefing précédent. Une seule notif le matin (briefing + digest) plutôt que deux. Sans Ollama, un briefing de repli sans IA est produit pour que l'écran ne soit jamais vide.
+- **Briefing : bornage du prompt** à 80 items par score décroissant, avec `num_ctx` à 8192. Au-delà, un petit modèle local perd le fil et le temps de génération explose.
+- **Matching des vulns structurées (GHSA)** : quand une vuln a des packages, les mots-clés ne sont cherchés que dans le titre et les sources, pas dans la description. Ça évite les faux positifs observés en réel (vuln Maven XWiki marquée « Python probable » parce que la description parle de macro Python).

@@ -2,6 +2,7 @@ import type { Config } from '../config';
 import type { DB } from '../db/client';
 import type { Logger } from '../lib/logger';
 import { safeFetch, type SafeFetchOptions, type SafeResponse } from '../lib/safe-fetch';
+import { BriefingService } from './briefing';
 import { Enricher } from './enricher';
 import { Notifier } from './notifier';
 import { Summarizer } from './ollama';
@@ -18,6 +19,7 @@ export interface Services {
   push: PushService;
   notifier: Notifier;
   summarizer: Summarizer;
+  briefings: BriefingService;
   scheduler: Scheduler;
   fetch: (url: string, opts?: SafeFetchOptions) => Promise<SafeResponse>;
 }
@@ -39,9 +41,11 @@ export function createServices(config: Config, db: DB, log: Logger, o: ServiceOv
   };
   const poller = new Poller(db, config, pipeline, log, fetcher);
   const enricher = new Enricher(db, config, pipeline, log, fetcher);
-  const summarizer = new Summarizer(db, config, log);
+  const summarizer = new Summarizer(db, config, log, o.now);
+  const briefings = new BriefingService(db, summarizer, log, config.timezone, o.now);
+  notifier.briefings = briefings;
   const scheduler = new Scheduler(db, config, log, { poller, enricher, notifier, summarizer });
   const fetch = (url: string, opts?: SafeFetchOptions) =>
     fetcher(url, { allowPrivate: config.allowPrivateNetworks, timeoutMs: config.fetchTimeoutMs, maxBytes: config.fetchMaxBytes, userAgent: config.userAgent, ...opts });
-  return { pipeline, poller, enricher, push, notifier, summarizer, scheduler, fetch };
+  return { pipeline, poller, enricher, push, notifier, summarizer, briefings, scheduler, fetch };
 }

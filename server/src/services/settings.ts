@@ -23,6 +23,11 @@ export const settingsSchema = z.object({
     topNews: z.number().int().min(0).max(20),
     includeMedium: z.boolean(),
   }),
+  /** Briefing du matin (Ollama, ou repli sans IA) généré à l'heure du digest. */
+  briefing: z.object({
+    enabled: z.boolean(),
+    maxItems: z.number().int().min(10).max(300),
+  }),
   quietHours: z.object({
     enabled: z.boolean(),
     start: hhmm,
@@ -51,6 +56,7 @@ export const defaultSettings: Settings = {
     minIntervalSec: 300,
   },
   digest: { enabled: true, time: '08:00', topNews: 5, includeMedium: true },
+  briefing: { enabled: true, maxItems: 80 },
   quietHours: { enabled: true, start: '22:00', end: '07:00' },
   feed: { priorityThreshold: 60, hnMinPoints: 150 },
   retention: { days: 30 },

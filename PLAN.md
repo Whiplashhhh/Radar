@@ -36,6 +36,8 @@ Chaque phase se termine par : `npm run lint && npm run typecheck && npm test && 
 - [ ] Captures Playwright (iPhone et desktop, sombre et clair) dans `docs/screenshots/`, relecture et corrections
 - [ ] Rétention
 
-## (f) Bonus Ollama
-- [ ] Résumés de 2 lignes en français, désactivés sans `OLLAMA_URL`
+## (f) Ollama (devenu prioritaire à la demande de l'utilisateur)
+- [x] Résumés de 2 lignes en français pour les articles longs et les fiches vuln
+- [x] Briefing du matin : toutes les actus depuis le précédent, avec repli sans IA
+- [ ] Écran Briefing et statut Ollama dans les réglages
 - [ ] README final

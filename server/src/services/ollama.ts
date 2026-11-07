@@ -39,25 +39,56 @@ export class Summarizer {
     private readonly db: DB,
     private readonly config: Config,
     private readonly log: Logger,
+    private readonly now: () => number = Date.now,
   ) {}
 
   get enabled(): boolean {
     return !!this.config.ollamaUrl;
   }
 
-  async summarize(kind: 'article' | 'vuln', title: string, text: string): Promise<string | null> {
-    if (!this.config.ollamaUrl) return null;
+  get model(): string {
+    return this.config.ollamaModel;
+  }
+
+  /** Appel brut à `/api/generate` (non streamé). */
+  async generate(prompt: string, opts: { timeoutMs?: number; numCtx?: number; temperature?: number } = {}): Promise<string> {
+    if (!this.config.ollamaUrl) throw new Error('OLLAMA_URL non défini');
     const res = await safeFetch(new URL('/api/generate', this.config.ollamaUrl).toString(), {
       method: 'POST',
       allowPrivate: true, // URL fournie par la configuration, pas par un flux
-      timeoutMs: 120_000,
-      maxBytes: 1024 * 1024,
+      timeoutMs: opts.timeoutMs ?? 120_000,
+      maxBytes: 2 * 1024 * 1024,
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ model: this.config.ollamaModel, prompt: buildPrompt(kind, title, text), stream: false, options: { temperature: 0.2 } }),
+      body: JSON.stringify({
+        model: this.config.ollamaModel,
+        prompt,
+        stream: false,
+        options: { temperature: opts.temperature ?? 0.2, ...(opts.numCtx ? { num_ctx: opts.numCtx } : {}) },
+      }),
     });
     if (res.status >= 400) throw new Error(`Ollama HTTP ${res.status}`);
-    const out = cleanSummary(res.json<{ response?: string }>().response ?? '');
+    return (res.json<{ response?: string }>().response ?? '').replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+  }
+
+  async summarize(kind: 'article' | 'vuln', title: string, text: string): Promise<string | null> {
+    if (!this.config.ollamaUrl) return null;
+    const out = cleanSummary(await this.generate(buildPrompt(kind, title, text)));
     return out || null;
+  }
+
+  /** État d'Ollama pour l'écran Réglages. */
+  async status(): Promise<{ configured: boolean; reachable: boolean; model: string; modelAvailable: boolean; models: string[]; error?: string }> {
+    const base = { configured: this.enabled, reachable: false, model: this.config.ollamaModel, modelAvailable: false, models: [] as string[] };
+    if (!this.config.ollamaUrl) return base;
+    try {
+      const res = await safeFetch(new URL('/api/tags', this.config.ollamaUrl).toString(), { allowPrivate: true, timeoutMs: 5000, maxBytes: 1024 * 1024 });
+      if (res.status >= 400) return { ...base, error: `HTTP ${res.status}` };
+      const models = (res.json<{ models?: { name: string }[] }>().models ?? []).map((m) => m.name);
+      const want = this.config.ollamaModel;
+      return { ...base, reachable: true, models, modelAvailable: models.some((m) => m === want || m === `${want}:latest` || m.split(':')[0] === want) };
+    } catch (err) {
+      return { ...base, error: (err as Error).message };
+    }
   }
 
   async tick(batch = 3): Promise<number> {
@@ -65,7 +96,7 @@ export class Summarizer {
     this.busy = true;
     let done = 0;
     try {
-      const since = Date.now() - 2 * 86_400_000;
+      const since = this.now() - 2 * 86_400_000;
       const arts = this.db
         .select({ id: items.id, title: items.title, summary: items.summaryHtml, content: items.contentHtml, readable: items.readableHtml })
         .from(items)

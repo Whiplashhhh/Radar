@@ -123,3 +123,12 @@ Chaque liste propose une recherche (FTS5), des filtres (source, techno, sévéri
 - Anti-SSRF : blocage des IP privées, loopback, link-local, CGNAT (donc Tailscale 100.64/10), ULA et multicast, avec vérification à chaque redirection. `ALLOW_PRIVATE_NETWORKS=true` lève le blocage.
 - Logs JSON via pino. Healthcheck Docker sur `/health`.
 - Ollama (`OLLAMA_URL`, `OLLAMA_MODEL`) : résumé de 2 lignes en français pour les articles de plus de 1 500 caractères et pour les fiches vuln. L'appel est autorisé même si l'URL est privée, puisqu'elle vient de la configuration.
+
+## 11. Briefing du matin (demande utilisateur)
+
+- Chaque matin, à l'heure du digest (08:00 par défaut), Radar génère un **briefing** qui couvre toutes les actus reçues depuis le briefing précédent (ou les dernières 24 h la première fois). Il n'est généré que s'il y a eu au moins une actu.
+- Le contenu est l'ensemble des articles et releases de la période, plus les cartes vuln qui touchent la watchlist ou sont KEV. Les items sont triés par score, et le prompt en contient au plus `briefing.maxItems` (80 par défaut).
+- **Avec Ollama**, le modèle rédige une accroche suivie de sections `## Sécurité / Releases / Tech / Actus` en puces, et met en gras les CVE et technos touchées. Le contexte passe à 8k et le timeout à 5 min.
+- **Sans Ollama, ou en cas d'erreur**, Radar produit un briefing de repli qui liste les meilleurs titres par section. L'erreur est enregistrée.
+- Une seule notification part le matin : « ☀️ Briefing du matin · 2 CVE, 34 actus ». Elle reprend l'accroche et ouvre `/briefing/:id`.
+- Table `briefings` (`period_start`, `period_end`, `item_count`, `summary`, `sections`, `model`, `error`, `read_at`). API : `GET /api/briefings`, `GET /api/briefings/:id|latest`, `POST /api/briefings/:id/read`, `POST /api/briefings/generate`, `GET /api/ollama/status`.

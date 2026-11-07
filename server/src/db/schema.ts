@@ -219,3 +219,27 @@ export type Item = typeof items.$inferSelect;
 export type Vuln = typeof vulns.$inferSelect;
 export type WatchEntry = typeof watchlist.$inferSelect;
 export type Notification = typeof notifications.$inferSelect;
+
+export interface BriefingSection {
+  category: Category;
+  label: string;
+  items: { id: number; title: string; source: string; score: number; techs: string[] }[];
+}
+
+/** Briefing du matin : résumé de toutes les actus reçues depuis le briefing précédent. */
+export const briefings = sqliteTable('briefings', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  createdAt: integer('created_at').notNull().default(now),
+  periodStart: integer('period_start').notNull(),
+  periodEnd: integer('period_end').notNull(),
+  itemCount: integer('item_count').notNull(),
+  /** Texte du briefing (Markdown léger : titres `##`, puces `-`, gras `**`). */
+  summary: text('summary').notNull(),
+  sections: text('sections', { mode: 'json' }).$type<BriefingSection[]>().notNull().default([]),
+  /** Modèle Ollama utilisé, `null` pour le briefing de repli sans IA. */
+  model: text('model'),
+  error: text('error'),
+  readAt: integer('read_at'),
+});
+
+export type Briefing = typeof briefings.$inferSelect;

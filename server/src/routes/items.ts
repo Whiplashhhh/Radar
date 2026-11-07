@@ -127,6 +127,7 @@ export async function itemRoutes(api: FastifyInstance, { db, services, config, l
       unread: unreadCounts(db, s.feed.priorityThreshold),
       priorityThreshold: s.feed.priorityThreshold,
       pushDevices: services.push.count(),
+      briefingUnread: services.briefings.unread(),
       ollama: services.summarizer.enabled,
       timezone: config.timezone,
       version: process.env.npm_package_version ?? '0.1.0',

@@ -3,6 +3,7 @@ import type { DB } from '../db/client';
 import { items, notifications, vulns, type Feed, type Item, type Notification, type Severity, type Vuln } from '../db/schema';
 import type { Logger } from '../lib/logger';
 import { deferForQuiet, isQuiet, parseHHMM, zonedParts } from '../lib/time';
+import type { BriefingService } from './briefing';
 import type { PushPayload, PushService } from './push';
 import { getKv, getSettings, setKv, type Settings } from './settings';
 
@@ -83,6 +84,8 @@ export function groupPayload(entries: { kind: 'vuln' | 'item'; id: string; sever
 }
 
 export class Notifier {
+  briefings?: BriefingService;
+
   constructor(
     private readonly db: DB,
     private readonly push: PushService,
@@ -239,19 +242,32 @@ export class Notifier {
     return { sent: result.sent, grouped: entries.length };
   }
 
-  /** Digest quotidien : à l'heure configurée (fenêtre de 3 h), une fois par jour, hors heures calmes. */
+  /**
+   * Rendez-vous du matin, à l'heure configurée (fenêtre de 3 h), une fois par jour, hors heures calmes :
+   * 1. génère le briefing (toutes les actus depuis le précédent, s'il y en a) ;
+   * 2. envoie le digest (CVE matchées moyennes/hautes + top actus), avec un lien vers le briefing.
+   */
   async digest(force = false): Promise<PushPayload | null> {
     const s = getSettings(this.db);
     const now = this.now();
     const local = zonedParts(now, this.tz);
     if (!force) {
-      if (!s.digest.enabled || !s.notifications.enabled) return null;
+      if (!s.digest.enabled && !s.briefing.enabled) return null;
       const start = parseHHMM(s.digest.time);
       if (local.minutes < start || local.minutes > start + 180) return null;
       if (getKv<string>(this.db, 'lastDigestDate') === local.date) return null;
       if (s.quietHours.enabled && isQuiet(now, this.tz, s.quietHours.start, s.quietHours.end)) return null;
     }
     setKv(this.db, 'lastDigestDate', local.date);
+
+    let briefing: Awaited<ReturnType<BriefingService['generate']>> = null;
+    if (this.briefings && (s.briefing.enabled || force)) {
+      briefing = await this.briefings.generate({ force }).catch((err: Error) => {
+        this.log.error({ err: err.message }, 'briefing generation failed');
+        return null;
+      });
+    }
+    if (!force && (!s.digest.enabled || !s.notifications.enabled)) return null;
 
     const vulnRows = this.db
       .select()
@@ -272,7 +288,7 @@ export class Notifier {
           .limit(s.digest.topNews)
           .all()
       : [];
-    if (!vulnList.length && !news.length) return null;
+    if (!vulnList.length && !news.length && !briefing) return null;
 
     const techs = [...new Set(vulnList.flatMap((v) => this.techsOf(v.id)))];
     const parts: string[] = [];
@@ -282,10 +298,18 @@ export class Notifier {
       ...vulnList.slice(0, 3).map((v) => `• ${v.id} (${SEVERITY_FR[v.severity].toLowerCase()})${this.techsOf(v.id)[0] ? ` ${this.techsOf(v.id)[0]}` : ''}`),
       ...news.slice(0, 3).map((n) => `• ${n.title.slice(0, 70)}`),
     ];
+    if (briefing) {
+      const accroche = briefing.summary
+        .split('\n')
+        .map((l) => l.replace(/[#*_`]/g, '').replace(/^-\s*/, '').trim())
+        .find((l) => l.length > 20);
+      if (!news.length) parts.push(`${briefing.itemCount} actu${briefing.itemCount > 1 ? 's' : ''}`);
+      lines.splice(vulnList.length ? Math.min(vulnList.length, 3) : 0, lines.length, ...(accroche ? [`📝 ${accroche}`] : []));
+    }
     const payload: PushPayload = {
-      title: `☀️ Digest Radar · ${parts.join(', ')}`,
+      title: `☀️ ${briefing ? 'Briefing du matin' : 'Digest Radar'} · ${parts.join(', ')}`,
       body: `${techs.length ? `${techs.slice(0, 4).join(', ')}\n` : ''}${lines.join('\n')}`.slice(0, 400),
-      url: '/priority',
+      url: briefing ? `/briefing/${briefing.id}` : '/priority',
       tag: 'radar-digest',
       severity: vulnList[0]?.severity ?? null,
       techs,
