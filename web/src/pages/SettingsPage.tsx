@@ -135,7 +135,7 @@ function PushSection() {
           </>
         ) : (
           <>
-            <Button variant="primary" onClick={() => void enable()} disabled={busy || permission === 'denied'}>{busy ? <Spinner size={17} /> : <Bell size={17} />} Activer les notifications</Button>
+            <Button variant="primary" onClick={() => void enable()} disabled={busy || (permission === 'denied' && !needsInstallForPush())}>{busy ? <Spinner size={17} /> : <Bell size={17} />} Activer les notifications</Button>
             {devices > 0 && <Button onClick={() => test.mutate()} disabled={test.isPending}><Send size={17} /> Tester</Button>}
           </>
         )}

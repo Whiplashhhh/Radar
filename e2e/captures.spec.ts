@@ -30,7 +30,7 @@ for (const theme of ['dark', 'light'] as const) {
       await page.goto(path);
       await s.ready(page);
       await page.waitForLoadState('networkidle');
-      await page.screenshot({ path: `docs/screenshots/${info.project.name}-${s.name}-${theme}.png`, fullPage: info.project.name === 'desktop' ? false : false });
+      await page.screenshot({ path: `docs/screenshots/${info.project.name.replace('capture-', '')}-${s.name}-${theme}.png`, fullPage: info.project.name === 'desktop' ? false : false });
     });
   }
 }

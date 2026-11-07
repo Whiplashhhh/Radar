@@ -95,8 +95,8 @@ export function WatchEditPage() {
             save.mutate();
           }}
         >
-          <Field label="Nom" hint="Affiché sur les cartes (ex. « Spring »).">
-            <input required value={f.name} onChange={(e) => set({ name: e.target.value })} className="min-h-11 w-full rounded-xl border border-border bg-surface px-3" />
+          <Field label="Nom" htmlFor="watch-name" hint="Affiché sur les cartes (ex. « Spring »).">
+            <input id="watch-name" required value={f.name} onChange={(e) => set({ name: e.target.value })} className="min-h-11 w-full rounded-xl border border-border bg-surface px-3" />
           </Field>
           <ListField label="Alias / mots-clés" hint="Cherchés avec des frontières de mot (match « probable »). Préfixez par = pour respecter la casse : =React ne matche pas « react to »." placeholder="Spring Boot" value={f.aliases} onChange={(aliases) => set({ aliases })} />
           <ListField label="Packages (écosystème:nom)" hint="Match « certain ». Le joker * est accepté. Écosystèmes : npm, maven, pip, pub, go, rubygems, nuget, composer, rust." placeholder="maven:org.springframework.boot:*" value={f.packages} onChange={(packages) => set({ packages })} mono />
@@ -112,10 +112,10 @@ export function WatchEditPage() {
   );
 }
 
-function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
+function Field({ label, hint, children, htmlFor }: { label: string; hint?: string; children: React.ReactNode; htmlFor?: string }) {
   return (
     <div>
-      <label className="mb-1.5 block font-semibold">{label}</label>
+      {htmlFor ? <label htmlFor={htmlFor} className="mb-1.5 block font-semibold">{label}</label> : <p className="mb-1.5 font-semibold">{label}</p>}
       {children}
       {hint && <p className="mt-1.5 text-sm text-muted">{hint}</p>}
     </div>
