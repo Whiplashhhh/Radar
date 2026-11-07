@@ -1,0 +1,13 @@
+node_modules
+dist
+web/dist
+web/dev-dist
+data
+.git
+.relais
+test-results
+playwright-report
+coverage
+docs/screenshots
+*.log
+.env

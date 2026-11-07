@@ -56,6 +56,12 @@ describe('parseFeed', () => {
     expect(it0?.url).toMatch(/^https:\/\/github\.com\/vuejs\/core\/releases\/tag\//);
     expect(it0?.publishedAt).toBeGreaterThan(Date.parse('2020-01-01'));
   });
+  it('supporte des notes de release très longues (> 10 000 entités, cas réel Node.js/Spring Boot)', () => {
+    const big = '&lt;p&gt;x&lt;/p&gt;'.repeat(6000);
+    const atom = `<?xml version="1.0"?><feed xmlns="http://www.w3.org/2005/Atom"><title>R</title><entry><id>1</id><title>v1</title><updated>2026-01-01T00:00:00Z</updated><content type="html">${big}</content></entry></feed>`;
+    const f = parseFeed(atom, 'https://github.com/nodejs/node/releases.atom');
+    expect(f.items[0]?.contentHtml?.length).toBeGreaterThan(40_000);
+  });
   it('refuse ce qui n’est pas un flux', () => {
     expect(() => parseFeed('<html><body>hi</body></html>')).toThrow(/Ni RSS ni Atom/);
     expect(() => parseFeed('pas du xml <<<')).toThrow();

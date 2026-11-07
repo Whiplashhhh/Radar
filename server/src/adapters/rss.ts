@@ -20,7 +20,9 @@ const parser = new XMLParser({
   parseTagValue: false,
   parseAttributeValue: false,
   trimValues: true,
-  processEntities: { enabled: true, maxTotalExpansions: 10_000 },
+  // Les notes de release GitHub contiennent des dizaines de milliers de &lt; : la limite par défaut (10k) casse le parsing.
+  // La protection « billion laughs » reste assurée par la profondeur d'expansion bornée et la taille max du corps.
+  processEntities: { enabled: true, maxTotalExpansions: 5_000_000, maxExpansionDepth: 5 },
   htmlEntities: true,
   isArray: (name) => ['item', 'entry', 'link', 'category', 'atom:link'].includes(name),
 });
