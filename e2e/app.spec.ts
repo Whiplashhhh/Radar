@@ -178,7 +178,7 @@ test('mode hors-ligne : le fil et les favoris restent consultables', async ({ pa
   await page.goto('/priority');
   await expect(cards(page).first()).toBeVisible();
   await page.evaluate(async () => {
-    await navigator.serviceWorker.ready;
+    await (navigator as unknown as { serviceWorker: { ready: Promise<unknown> } }).serviceWorker.ready;
   });
   // Le SW contrôle la page après un rechargement ; on charge les vues à mettre en cache.
   await page.reload();
