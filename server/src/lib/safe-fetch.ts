@@ -158,7 +158,9 @@ export async function safeFetch(rawUrl: string, opts: SafeFetchOptions = {}): Pr
     } catch (err) {
       const e = err as Error & { cause?: Error & { code?: string } };
       if (e.name === 'TimeoutError' || e.name === 'AbortError') throw new FetchError('Délai dépassé');
-      throw new FetchError(e.cause?.message ?? e.message);
+      const cause = e.cause as (Error & { code?: string; errors?: Error[] }) | undefined;
+      const detail = [cause?.code, cause?.message || cause?.errors?.map((x) => x.message).join(' ; ')].filter(Boolean).join(' ');
+      throw new FetchError(detail || e.message || 'Erreur réseau');
     }
 
     if (res.status >= 300 && res.status < 400 && res.status !== 304) {
