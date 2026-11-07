@@ -1,43 +1,42 @@
 # HANDOFF — Radar (lecteur RSS veille sécu, PWA)
-STATUS: CONTINUE
+STATUS: DONE
 Session: 1
 
 ## Mission
-Construire Radar de bout en bout selon `PROMPT.md` (lire en entier). Phases a→f, SPEC.md/PLAN.md/DECISIONS.md tenus à jour, commits petits et fréquents (demande explicite de l'utilisateur).
-Ajout utilisateur : Ollama n'est PLUS optionnel côté dev → résumés par article + **briefing quotidien du matin** résumant toutes les news depuis le dernier briefing (seulement s'il y a des news). Doit toujours fonctionner sans OLLAMA_URL.
+Construire Radar de bout en bout selon `PROMPT.md`, avec un ajout de l'utilisateur : résumés Ollama et briefing quotidien du matin (toutes les news depuis le dernier briefing, seulement s'il y en a). Commits réguliers.
 
 ## Critères de fin
-- [x] SPEC.md, PLAN.md, DECISIONS.md
-- [x] Backend complet démarre, /health ok, collecte réelle KEV/GHSA/releases OK
-- [x] Tests Vitest — 103 verts (`npm test`)
-- [x] Briefing Ollama quotidien backend (services/briefing.ts, intégré à notifier.digest) — UI à faire
-- [ ] Frontend React/Tailwind/PWA complet (onglets, cartes, fiche vuln, réglages, swipe, PTR, offline, iOS install, badge)
-- [ ] Playwright e2e + captures docs/screenshots (iPhone 390×844 + desktop, sombre + clair), relues
-- [x] Dockerfile, docker-compose (127.0.0.1), CI (.github/workflows/ci.yml, feeds.yml) — non exécutables ici
-- [ ] README complet
-- [ ] lint + typecheck + test + build verts
+- [x] SPEC.md, PLAN.md, DECISIONS.md à jour
+- [x] Backend complet, collecte réelle KEV/GHSA/releases vérifiée (serveur buildé, scheduler actif pendant 100 s)
+- [x] Vitest : 103 tests verts
+- [x] Briefing Ollama : backend, UI, tests (faux serveur Ollama)
+- [x] Frontend PWA complet
+- [x] Playwright : 69 tests verts, captures dans docs/screenshots (iPhone + desktop, sombre + clair), relues
+- [x] Dockerfile, docker-compose (127.0.0.1), CI — NON exécutés ici (pas de Docker, pas de push)
+- [x] README complet
+- [x] lint, typecheck, test, build verts
 
 ## Contraintes et décisions
-- Pas de Docker ni réseau (sauf GitHub/npm) dans le bac à sable : voir DECISIONS.md.
-- Playwright épinglé 1.64.0 (chromium /ms-playwright rev 1248).
-- web-push v4 est ESM sans default : `import * as webpush`.
-- Ne jamais `pkill -f` avec un motif présent dans la commande (tue le shell) : utiliser ps|grep [x]|kill.
+- Voir DECISIONS.md. Bac à sable sans Docker, réseau limité à GitHub et npm.
 
 ## État actuel
-Backend complet + testé + commité. Front pas commencé (web/ vide). npm run check:feeds : 13/26 OK (le reste = réseau bac à sable).
+Tout est terminé et commité. Restent hors de portée du bac à sable : `docker compose up` réel, première exécution de la CI (le dépôt n'est pas poussé) et vérification des 13 flux non-GitHub (`npm run check:feeds` ou workflow feeds.yml).
 
 ## Prochaine étape
-Frontend : web/vite.config.ts, index.html, src/{main.tsx,sw.ts,index.css,api.ts,lib,components,pages}. Onglets Prioritaire/Sécurité/Tech/Tout/Réglages + pages item, vuln, briefing, réglages (notifs, watchlist, flux/santé, Ollama).
+Pousser sur GitHub (avec l'accord de l'utilisateur) et vérifier la CI.
+
+## Reste à faire
+1. Push et CI verte (jobs docker, e2e, feeds)
 
 ## Fichiers clés
-- `server/src/services/pipeline.ts` — ingestion, fusion vulns, matching, scoring
-- `server/src/services/notifier.ts` — règles notif, dispatch, digest
-- `server/src/services/queries.ts` — listes du fil, mark-read
-- `server/src/routes/*.ts` — API
+- `server/src/services/pipeline.ts`, `notifier.ts`, `briefing.ts`
+- `web/src/pages/*`, `web/src/sw.ts`
 
 ## Commandes utiles
-- `npx tsc -p server/tsconfig.json --noEmit && npx eslint server`
-- `DATA_DIR=<scratch>/d1 PORT=8799 DISABLE_SCHEDULER=1 npx tsx server/src/index.ts`
+- `npm run lint && npm run typecheck && npm test && npm run build && npx playwright test`
 
 ## Pièges
-- voir Contraintes
+- Ne jamais lancer `pkill -f` avec un motif présent dans la commande elle-même : ça tue le shell.
+- web-push v4 : `import * as webpush`.
+- Fastify : déclarer `setErrorHandler` avant d'enregistrer les routes.
+- fast-xml-parser : la limite d'entités par défaut casse les releases GitHub.
