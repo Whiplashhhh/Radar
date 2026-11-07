@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+  <id>tag:github.com,2008:https://github.com/vuejs/core/releases</id>
+  <link type="text/html" rel="alternate" href="https://github.com/vuejs/core/releases"/>
+  <link type="application/atom+xml" rel="self" href="https://github.com/vuejs/core/releases.atom"/>
+  <title>Release notes from core</title>
+  <updated>2026-11-05T09:10:59Z</updated>
+  <entry>
+    <id>tag:github.com,2008:Repository/137078487/v3.5.45</id>
+    <updated>2026-11-05T09:15:06Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/vuejs/core/releases/tag/v3.5.45"/>
+    <title>v3.5.45</title>
+    <content type="html">&lt;p&gt;For stable releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/main/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; for details.&lt;br&gt;
+For pre-releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/minor/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; of the &lt;code&gt;minor&lt;/code&gt; branch.&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/137078487/v3.6.0-rc.14</id>
+    <updated>2026-10-30T08:01:40Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/vuejs/core/releases/tag/v3.6.0-rc.14"/>
+    <title>v3.6.0-rc.14</title>
+    <content type="html">&lt;p&gt;For stable releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/main/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; for details.&lt;br&gt;
+For pre-releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/minor/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; of the &lt;code&gt;minor&lt;/code&gt; branch.&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/137078487/v3.6.0-rc.13</id>
+    <updated>2026-10-23T07:59:39Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/vuejs/core/releases/tag/v3.6.0-rc.13"/>
+    <title>v3.6.0-rc.13</title>
+    <content type="html">&lt;p&gt;For stable releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/main/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; for details.&lt;br&gt;
+For pre-releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/minor/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; of the &lt;code&gt;minor&lt;/code&gt; branch.&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/137078487/v3.6.0-rc.12</id>
+    <updated>2026-10-16T07:57:42Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/vuejs/core/releases/tag/v3.6.0-rc.12"/>
+    <title>v3.6.0-rc.12</title>
+    <content type="html">&lt;p&gt;For stable releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/main/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; for details.&lt;br&gt;
+For pre-releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/minor/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; of the &lt;code&gt;minor&lt;/code&gt; branch.&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/137078487/v3.5.44</id>
+    <updated>2026-10-13T07:43:25Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/vuejs/core/releases/tag/v3.5.44"/>
+    <title>v3.5.44</title>
+    <content type="html">&lt;p&gt;For stable releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/main/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; for details.&lt;br&gt;
+For pre-releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/minor/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; of the &lt;code&gt;minor&lt;/code&gt; branch.&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/137078487/v3.6.0-rc.11</id>
+    <updated>2026-10-10T07:49:44Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/vuejs/core/releases/tag/v3.6.0-rc.11"/>
+    <title>v3.6.0-rc.11</title>
+    <content type="html">&lt;p&gt;For stable releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/main/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; for details.&lt;br&gt;
+For pre-releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/minor/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; of the &lt;code&gt;minor&lt;/code&gt; branch.&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/137078487/v3.6.0-rc.10</id>
+    <updated>2026-09-30T09:01:06Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/vuejs/core/releases/tag/v3.6.0-rc.10"/>
+    <title>v3.6.0-rc.10</title>
+    <content type="html">&lt;p&gt;For stable releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/main/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; for details.&lt;br&gt;
+For pre-releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/minor/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; of the &lt;code&gt;minor&lt;/code&gt; branch.&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/137078487/v3.6.0-rc.9</id>
+    <updated>2026-09-18T08:17:55Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/vuejs/core/releases/tag/v3.6.0-rc.9"/>
+    <title>v3.6.0-rc.9</title>
+    <content type="html">&lt;p&gt;For stable releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/main/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; for details.&lt;br&gt;
+For pre-releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/minor/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; of the &lt;code&gt;minor&lt;/code&gt; branch.&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/137078487/v3.5.43</id>
+    <updated>2026-09-17T08:36:57Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/vuejs/core/releases/tag/v3.5.43"/>
+    <title>v3.5.43</title>
+    <content type="html">&lt;p&gt;For stable releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/main/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; for details.&lt;br&gt;
+For pre-releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/minor/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; of the &lt;code&gt;minor&lt;/code&gt; branch.&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+  <entry>
+    <id>tag:github.com,2008:Repository/137078487/v3.6.0-rc.8</id>
+    <updated>2026-09-11T05:46:16Z</updated>
+    <link rel="alternate" type="text/html" href="https://github.com/vuejs/core/releases/tag/v3.6.0-rc.8"/>
+    <title>v3.6.0-rc.8</title>
+    <content type="html">&lt;p&gt;For stable releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/main/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; for details.&lt;br&gt;
+For pre-releases, please refer to &lt;a href=&quot;https://github.com/vuejs/core/blob/minor/CHANGELOG.md&quot;&gt;CHANGELOG.md&lt;/a&gt; of the &lt;code&gt;minor&lt;/code&gt; branch.&lt;/p&gt;</content>
+    <author>
+      <name>github-actions[bot]</name>
+    </author>
+    <media:thumbnail height="30" width="30" url="https://avatars.githubusercontent.com/in/15368?s=60&amp;v=4"/>
+  </entry>
+</feed>
