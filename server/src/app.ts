@@ -43,7 +43,7 @@ export async function buildApp(ctx: AppContext): Promise<FastifyInstance> {
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'"],
         imgSrc: ["'self'", 'https:', 'data:', 'blob:'],
         fontSrc: ["'self'", 'data:'],
         connectSrc: ["'self'"],

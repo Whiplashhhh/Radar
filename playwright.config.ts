@@ -23,8 +23,8 @@ export default defineConfig({
   projects: [
     { name: 'capture-iphone', testMatch: /captures\.spec/, use: { ...iphone } },
     { name: 'capture-desktop', testMatch: /captures\.spec/, use: { ...desktop } },
-    { name: 'iphone', testMatch: /app\.spec/, use: { ...iphone }, dependencies: ['capture-iphone', 'capture-desktop'] },
-    { name: 'desktop', testMatch: /app\.spec/, use: { ...desktop }, dependencies: ['iphone'] },
+    { name: 'iphone', testMatch: /(app|csp)\.spec/, use: { ...iphone }, dependencies: ['capture-iphone', 'capture-desktop'] },
+    { name: 'desktop', testMatch: /(app|csp)\.spec/, use: { ...desktop }, dependencies: ['iphone'] },
   ],
   webServer: {
     command: `npx tsx scripts/demo-seed.ts ${DATA} && node dist/server/index.js`,
