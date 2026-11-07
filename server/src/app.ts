@@ -5,6 +5,7 @@ import helmet from '@fastify/helmet';
 import compress from '@fastify/compress';
 import fastifyStatic from '@fastify/static';
 import { sql } from 'drizzle-orm';
+import { ZodError } from 'zod';
 import type { Config } from './config';
 import type { DB } from './db/client';
 import type { Logger } from './lib/logger';
@@ -24,6 +25,16 @@ export async function buildApp(ctx: AppContext): Promise<FastifyInstance> {
     disableRequestLogging: process.env.LOG_REQUESTS !== 'true',
     bodyLimit: 5 * 1024 * 1024,
     trustProxy: true,
+  });
+
+  app.setErrorHandler((err: Error & { statusCode?: number; validation?: unknown }, req, reply) => {
+    const issues = (err as { issues?: { path: PropertyKey[]; message: string }[] }).issues;
+    if (err instanceof ZodError || (err.name === 'ZodError' && Array.isArray(issues))) {
+      return reply.code(400).send({ error: (issues ?? []).map((i) => `${i.path.map(String).join('.') || 'corps'} : ${i.message}`).join(' ; ') });
+    }
+    const status = err.statusCode && err.statusCode >= 400 ? err.statusCode : 500;
+    if (status >= 500) req.log.error({ err }, 'request failed');
+    return reply.code(status).send({ error: status >= 500 ? 'Erreur interne' : err.message });
   });
 
   await app.register(helmet, {
@@ -89,12 +100,6 @@ export async function buildApp(ctx: AppContext): Promise<FastifyInstance> {
     }
     reply.header('Cache-Control', 'no-cache');
     return reply.type('text/html').sendFile('index.html');
-  });
-
-  app.setErrorHandler((err: Error & { statusCode?: number; validation?: unknown }, req, reply) => {
-    const status = err.statusCode && err.statusCode >= 400 ? err.statusCode : 500;
-    if (status >= 500) req.log.error({ err }, 'request failed');
-    return reply.code(status).send({ error: status >= 500 ? 'Erreur interne' : err.message });
   });
 
   return app;

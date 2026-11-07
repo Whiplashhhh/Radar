@@ -78,6 +78,12 @@ function cleanTitle(t: string | null): string {
     .trim();
 }
 
+function guidIsUrl(g: Record<string, string> | string | undefined): boolean {
+  if (!g) return false;
+  if (typeof g === 'object' && g['@_isPermaLink'] === 'false') return false;
+  return /^https?:\/\//.test(text(g) ?? '');
+}
+
 export function parseFeed(xml: string, feedUrl: string | null = null): ParsedFeed {
   let doc: Record<string, Node>;
   try {
@@ -137,7 +143,7 @@ export function parseFeed(xml: string, feedUrl: string | null = null): ParsedFee
         const description = text(it.description);
         return {
           guid,
-          url: link ?? (typeof guidNode === 'object' && guidNode['@_isPermaLink'] !== 'false' ? absolute(text(guidNode), siteUrl) : null),
+          url: link ?? (guidIsUrl(guidNode) ? absolute(text(guidNode), siteUrl) : null),
           title: cleanTitle(text(it.title)) || cleanTitle(description).slice(0, 120) || '(sans titre)',
           summaryHtml: description,
           contentHtml: content,

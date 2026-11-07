@@ -25,8 +25,8 @@ export function sanitize(html: string | null | undefined, baseUrl?: string | nul
   return sanitizeHtml(html, {
     allowedTags: ALLOWED_TAGS,
     allowedAttributes: {
-      a: ['href', 'title'],
-      img: ['src', 'alt', 'title', 'width', 'height', 'srcset', 'sizes'],
+      a: ['href', 'title', 'target', 'rel'],
+      img: ['src', 'alt', 'title', 'width', 'height', 'srcset', 'sizes', 'loading', 'decoding'],
       source: ['srcset', 'type', 'media', 'sizes'],
       td: ['colspan', 'rowspan'],
       th: ['colspan', 'rowspan', 'scope'],
