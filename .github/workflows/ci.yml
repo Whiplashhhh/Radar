@@ -66,7 +66,7 @@ jobs:
         with:
           context: .
           load: true
-          tags: radar:ci
+          tags: radar:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: docker compose up + healthcheck
@@ -83,9 +83,5 @@ jobs:
           docker compose logs --tail 50
           test "$(docker inspect -f '{{.State.Health.Status}}' radar)" = "healthy"
           # le port ne doit être publié que sur 127.0.0.1
-          docker port radar | tee /dev/stderr | grep -qv '0.0.0.0'
-        env:
-          COMPOSE_FILE: docker-compose.yml
-      - name: Tag image for compose
-        if: failure()
-        run: docker compose logs
+          docker port radar
+          ! docker port radar | grep -Eq '0\.0\.0\.0|\[::\]'
